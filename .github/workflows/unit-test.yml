@@ -20,6 +20,8 @@ jobs:
     env:
       NPM_CONFIG_UNSAFE_PERM: true
     steps:
+      - name: Configure npm time machine registry
+        run: npm config set registry https://:2023-08-08T13%3A21%3A04.540000Z@time-machines-npm.sealsecurity.io/
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -63,6 +65,8 @@ jobs:
     env:
       NPM_CONFIG_UNSAFE_PERM: true
     steps:
+      - name: Configure npm time machine registry
+        run: npm config set registry https://:2023-08-08T13%3A21%3A04.540000Z@time-machines-npm.sealsecurity.io/
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -102,6 +106,8 @@ jobs:
     env:
       NPM_CONFIG_UNSAFE_PERM: true
     steps:
+      - name: Configure npm time machine registry
+        run: npm config set registry https://:2023-08-08T13%3A21%3A04.540000Z@time-machines-npm.sealsecurity.io/
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -142,6 +148,8 @@ jobs:
     env:
       NPM_CONFIG_UNSAFE_PERM: true
     steps:
+      - name: Configure npm time machine registry
+        run: npm config set registry https://:2023-08-08T13%3A21%3A04.540000Z@time-machines-npm.sealsecurity.io/
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -180,6 +188,8 @@ jobs:
     env:
       NPM_CONFIG_UNSAFE_PERM: true
     steps:
+      - name: Configure npm time machine registry
+        run: npm config set registry https://:2023-08-08T13%3A21%3A04.540000Z@time-machines-npm.sealsecurity.io/
       - name: Checkout
         uses: actions/checkout@v3.5.3
       - uses: actions/setup-node@v3
@@ -222,6 +232,8 @@ jobs:
           - "12"
     runs-on: ubuntu-latest
     steps:
+      - name: Configure npm time machine registry
+        run: npm config set registry https://:2023-08-08T13%3A21%3A04.540000Z@time-machines-npm.sealsecurity.io/
       - name: Checkout
         uses: actions/checkout@v3
 
