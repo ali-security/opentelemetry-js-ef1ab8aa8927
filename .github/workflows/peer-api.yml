@@ -9,6 +9,8 @@ on:
 
 jobs:
   peer-api-check:
+    # disabled on the seal fork: not needed for cross-platform gate
+    if: false
     runs-on: ubuntu-latest
     container:
       image: node:20

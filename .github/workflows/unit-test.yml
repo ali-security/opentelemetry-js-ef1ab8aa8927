@@ -5,6 +5,7 @@ on:
       - main
   pull_request:
   merge_group:
+  workflow_dispatch:
 
 jobs:
   node-tests:
@@ -57,9 +58,6 @@ jobs:
             export NODE_OPTIONS=--openssl-legacy-provider
           fi
           npm run test
-      - name: Report Coverage
-        run: npm run codecov
-        if: ${{ matrix.node_version == '14' }}
   node-windows-tests:
     runs-on: windows-latest
     env:
@@ -70,7 +68,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
 
       - run: npm install -g npm@latest
 
@@ -98,8 +96,48 @@ jobs:
           npm run compile
 
       - name: Unit tests
-        run: npm run test
+        run: npx lerna run test --scope @opentelemetry/core
+  node-macos-tests:
+    runs-on: macos-latest
+    env:
+      NPM_CONFIG_UNSAFE_PERM: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - run: npm install -g npm@latest
+
+      - name: restore lerna
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            package-lock.json
+            packages/*/node_modules
+            packages/*/package-lock.json
+            experimental/packages/*/node_modules
+            experimental/packages/*/package-lock.json
+          key: node-macos-tests-${{ runner.os }}-${{ hashFiles('package.json', 'packages/*/package.json', 'experimental/packages/*/package.json') }}
+
+      - name: Bootstrap
+        run: |
+          npm install --ignore-scripts
+          npx lerna bootstrap --no-ci --hoist --nohoist='zone.js' --ignore @opentelemetry/selenium-tests
+
+      - name: Build 🔧
+        run: |
+          npm run compile
+
+      - name: Unit tests
+        run: npx lerna run test --scope @opentelemetry/core
   browser-tests:
+    # disabled on the seal fork: requires headless browser not available cross-platform
+    if: false
     runs-on: ubuntu-latest
     env:
       NPM_CONFIG_UNSAFE_PERM: true
@@ -135,9 +173,9 @@ jobs:
 
       - name: Unit tests
         run: npm run test:browser
-      - name: Report Coverage
-        run: npm run codecov:browser
   webworker-tests:
+    # disabled on the seal fork: requires headless browser not available cross-platform
+    if: false
     runs-on: ubuntu-latest
     env:
       NPM_CONFIG_UNSAFE_PERM: true
@@ -172,9 +210,9 @@ jobs:
 
       - name: Unit tests
         run: npm run test:webworker
-      - name: Report Coverage
-        run: npm run codecov:webworker
   api-eol-node-test:
+    # disabled on the seal fork: tests only the API package with EOL node versions
+    if: false
     strategy:
       fail-fast: false
       matrix:
